@@ -41,7 +41,7 @@ export default function Dropdown({options, selected, onSelectedChange}) {
     <div ref={ref} className="ui form">
       <div className="field">
         <label className="label">
-          {`select a color ${open}`}
+          Select a color
         </label>
         <div 
           onClick={() => setOpen(!open)} 
