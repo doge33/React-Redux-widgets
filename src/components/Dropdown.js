@@ -5,16 +5,24 @@ export default function Dropdown({options, selected, onSelectedChange}) {
   const [open, setOpen] = useState(false);
   const ref = useRef(); //useRef: a direct reference to DOM element
 
-  //use useEffect to set up a manual event listener on <body> to listen for click event.
+  /*----------------use useEffect to set up a manual event listener on <body> to listen for click event -------------*/
   useEffect(() => {
-    //manual event listeners gets called first before other react event listeners
-    document.body.addEventListener('click', (evt) => {
+    const onBodyClick = (evt) => {
       if(ref.current && ref.current.contains(evt.target)) {
         return;
       }
       setOpen(false);
-    }, { capture: true });
+    }
+    //manual event listeners gets called first before other react event listeners
+    document.body.addEventListener('click', onBodyClick, { capture: true });
+    
+    //to prevent memory leak aka. leaving stuff behind after your component is removed, it's best practice to
+    //clean up certain side effects, eg. setTimeOut, setInterval, event listeners
+    return () => {
+      document.body.removeEventListener("click", onBodyClick); //this will run when Dropdown componenet is gonna be removed from DOM
+    }
   }, []);
+  // ------------------------------------------------------
 
   const renderedOptions = options.map(option => {
 
