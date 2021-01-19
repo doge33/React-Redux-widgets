@@ -4,6 +4,17 @@ import axios from 'axios';
 export default function Convert({language, text}) {
 
   const [translated, setTranslated] = useState('');
+  const [debouncedText, setDebouncedText] = useState(text);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedText(text); //updates debouncedText to be current text after every 500ms without new text updates
+    }, 500);
+    
+    return () => {
+      clearTimeout(timerId); //whenever text is updated within 500ms, this will run and clear the previous timer of 500ms
+    }
+  }, [text]);
 
   useEffect(() => {
     //make helper async arrow function
@@ -11,7 +22,7 @@ export default function Convert({language, text}) {
       //leaving the request body (2nd argument) empty cuz this is how google translate api works
       const {data} = await axios.post('https://translation.googleapis.com/language/translate/v2', {}, {
         params: {
-          q: text,
+          q: debouncedText,
           target: language.value,
           key: "AIzaSyCHUCmpR7cT_yDFHC98CZJy2LTms-IwDlM"
         }
@@ -21,7 +32,7 @@ export default function Convert({language, text}) {
 
     doTranslation();
 
-  }, [language, text]);
+  }, [language, debouncedText]);
 
   return (
     <div>
