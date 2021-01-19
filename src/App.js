@@ -4,6 +4,7 @@ import Search from './components/Search';
 import Dropdown from  './components/Dropdown';
 import Translate from './components/Translate';
 import Route from "./components/Route";
+import Header from "./components/Header";
 
 const items = [
   {
@@ -35,31 +36,6 @@ const options = [
   }
 ];
 
-const showAccordion = () => {
-  if(window.location.pathname === "/") {
-    return <Accordion items={items}/>
-  };
-};
-
-const showList = () => {
-  if(window.location.pathname === "/list") {
-    return <Search />;
-  }
-};
-
-const showDropdown = () => {
-  if(window.location.pathname === "/dropdown") {
-    return <Dropdown />;
-  };
-};
-
-const showTranslate = () => {
-  if(window.location.pathname === "/translate") {
-    return <Translate />;
-  };
-};
-
-
 
 export default function App() {
 
@@ -72,6 +48,7 @@ export default function App() {
     // using a separate Route component to display components under different path;
     //this makes it compoenents more re-usable!
     <div>
+      <Header />
       <Route path="/">
         <Accordion items={items}/> 
       </Route>
